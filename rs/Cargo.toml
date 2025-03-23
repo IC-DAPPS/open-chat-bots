@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "canister/examples/echo",
+    "canister/examples/price",
     "canister/examples/greet/canister",
     "canister/examples/greet/loader",
     "canister/examples/reminder",

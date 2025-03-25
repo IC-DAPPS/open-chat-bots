@@ -11,6 +11,7 @@ use state::State;
 
 pub mod memory;
 pub mod router;
+pub mod stable;
 pub mod state;
 
 const READER_WRITER_BUFFER_SIZE: usize = 1024 * 1024; // 1MB

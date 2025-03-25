@@ -3,7 +3,7 @@ use oc_bots_sdk::api::command::{CommandHandler, SuccessResult};
 use oc_bots_sdk::api::definition::*;
 use oc_bots_sdk::oc_api::actions::send_message;
 use oc_bots_sdk::oc_api::client::Client;
-use oc_bots_sdk::types::BotCommandContext;
+use oc_bots_sdk::types::{BotCommandContext, ChatRole};
 use oc_bots_sdk_canister::CanisterRuntime;
 use std::sync::LazyLock;
 
@@ -154,7 +154,7 @@ impl ConfigXRCProvider {
                 }),
             },],
             permissions: BotPermissions::text_only(),
-            default_role: None,
+            default_role:  Some(ChatRole::Admin),
             direct_messages: false,
         }
     }

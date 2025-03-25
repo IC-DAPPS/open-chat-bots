@@ -26,8 +26,10 @@ impl CommandHandler<CanisterRuntime> for Price {
         //     "<img src=\"{}\" alt=\"Example image\" width=\"48\" height=\"48\"/>",
         //     url
         // );
+        let user_id = oc_client.context().command.initiator;
+        let scope = oc_client.context().scope.to_owned();
 
-        let text = "Price of ".to_string();
+        let text = format!("user_id: {}\n\nscope: {:?}", user_id, scope);
 
         // Send the message to OpenChat but don't wait for the response
         let message = oc_client

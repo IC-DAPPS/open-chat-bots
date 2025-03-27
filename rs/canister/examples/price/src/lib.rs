@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 use state::State;
 
 pub mod memory;
+mod price_provider;
 pub mod router;
 pub mod stable;
 pub mod state;

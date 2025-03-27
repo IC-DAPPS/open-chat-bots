@@ -1,4 +1,8 @@
+use crate::price_provider::icpswap::{get_icrc_ledger_name, get_latest_price};
+use crate::price_provider::{format_float, get_expiration_time};
+use crate::stable::price_map::{self, PriceStore};
 use async_trait::async_trait;
+use candid::Principal;
 use oc_bots_sdk::api::command::{CommandHandler, SuccessResult};
 use oc_bots_sdk::api::definition::*;
 use oc_bots_sdk::oc_api::actions::send_message;
@@ -22,17 +26,32 @@ impl CommandHandler<CanisterRuntime> for ConfigICPSwapProvider {
         &self,
         oc_client: Client<CanisterRuntime, BotCommandContext>,
     ) -> Result<SuccessResult, String> {
-        // let user_id = oc_client.context().command.initiator;
-        // let scope = oc_client.context().scope.to_owned();
-
-        let canister_id = oc_client
+        let canister_id_string = oc_client
             .context()
             .command
             .arg::<String>("Ledger_CanisterId");
 
+        let canister_id = Principal::from_text(&canister_id_string)
+            .map_err(|e| format!("Invalid canister ID: {}", e))?; // `?` operator will return the the maped error "Invalid canister ID: {}" if the fromText returns Err() . if Ok() we use the value // https://gist.github.com/ahdrahees/7e692d0df04d4df25aa6b2282aaf93e2
+
+        let (ledger_name,) = get_icrc_ledger_name(canister_id)
+            .await
+            .map_err(|e| format!("Failed to get ledger name: {:?}", e))?;
+
+        let price = get_latest_price(canister_id).await?;
+
         let reply = format!(
-            "Configured for ICPSwap provider with canister ID: {}",
-            canister_id
+            "Configured ICPSwap as provider for {ledger_name} \nCurrent Price of {ledger_name} ${}",
+            format_float(price)
+        );
+
+        price_map::insert(
+            canister_id.to_string(),
+            PriceStore {
+                price,
+                expiration_time: get_expiration_time(),
+                name: Some(ledger_name),
+            },
         );
 
         // Send the message to OpenChat but don't wait for the response

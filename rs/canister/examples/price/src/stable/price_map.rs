@@ -41,8 +41,9 @@ pub fn len() -> u64 {
 
 #[derive(candid::CandidType, Clone, Serialize, Debug, Deserialize)]
 pub struct PriceStore {
-    price: f64,
-    expiration_time: u64,
+    pub price: f64,
+    pub expiration_time: u64,
+    pub name: Option<String>,
 }
 
 impl Storable for PriceStore {

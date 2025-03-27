@@ -1,2 +1,2 @@
-mod config_map;
-mod price_map;
+pub mod config_map;
+pub mod price_map;

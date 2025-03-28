@@ -1,5 +1,6 @@
 use crate::price_provider::icpswap::{get_icrc_ledger_name, get_latest_price};
 use crate::price_provider::{format_float, get_expiration_time};
+use crate::stable::config_map::{self, Config, ConfigKey};
 use crate::stable::price_map::{self, PriceStore};
 use async_trait::async_trait;
 use candid::Principal;
@@ -44,6 +45,11 @@ impl CommandHandler<CanisterRuntime> for ConfigICPSwapProvider {
             "Configured ICPSwap as provider for {ledger_name} \nCurrent Price of {ledger_name} ${}",
             format_float(price)
         );
+
+        let scope = oc_client.context().scope.to_owned();
+
+        let config_key = ConfigKey::from_bot_cmd_scope(scope);
+        config_map::insert(config_key, Config::ICPSwap { canister_id });
 
         price_map::insert(
             canister_id.to_string(),

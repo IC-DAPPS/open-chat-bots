@@ -1,3 +1,4 @@
+use super::get_expiration_time;
 use candid::{CandidType, Int, Nat, Principal};
 use ic_cdk::api::call::CallResult;
 use ic_cdk::call;
@@ -31,7 +32,7 @@ async fn get_token_prices_data(
     ic_cdk::call(canister_id, "getTokenPricesData", (arg0, arg1, arg2, arg3)).await
 }
 
-pub async fn get_latest_price(ledger_id: Principal) -> Result<f64, String> {
+pub async fn get_latest_price(ledger_id: Principal) -> Result<(f64, u64), String> {
     let node_index = Principal::from_text("ggzvv-5qaaa-aaaag-qck7a-cai").unwrap();
 
     let (opt_token_storage,) = token_storage(node_index, ledger_id.to_string())
@@ -57,5 +58,5 @@ pub async fn get_latest_price(ledger_id: Principal) -> Result<f64, String> {
         .first()
         .ok_or(format!("Failed to get Price. No data found."))?;
 
-    Ok(latest_price.close)
+    Ok((latest_price.close, get_expiration_time()))
 }

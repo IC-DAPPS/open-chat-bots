@@ -20,8 +20,8 @@ thread_local! {
     );
 }
 
-pub fn get(key: String) -> Option<PriceStore> {
-    MAP.with(|p| p.borrow().get(&key))
+pub fn get(key: &String) -> Option<PriceStore> {
+    MAP.with(|p| p.borrow().get(key))
 }
 
 pub fn insert(key: String, value: PriceStore) -> Option<PriceStore> {
@@ -59,7 +59,7 @@ impl Storable for PriceStore {
     }
 }
 
-pub fn price_key_from_ledgerid(canister_id: Principal) -> String {
+pub fn price_key_from_ledgerid(canister_id: &Principal) -> String {
     canister_id.to_string()
 }
 
@@ -73,7 +73,7 @@ pub fn price_key_from_base_quote_asset(base: &Asset, quote: &Asset) -> String {
     )
 }
 
-pub fn price_key_from_config(config: Config) -> String {
+pub fn price_key_from_config(config: &Config) -> String {
     match config {
         Config::ICPSwap {
             canister_id, /* name */

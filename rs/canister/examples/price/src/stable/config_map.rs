@@ -51,6 +51,18 @@ pub enum Config {
     },
 }
 
+impl Config {
+    pub fn xrc_asset_symbols(&self) -> Option<(&str, &str)> {
+        match self {
+            Config::XRC {
+                base_asset,
+                quote_asset,
+            } => Some((&base_asset.symbol, &quote_asset.symbol)),
+            _ => None,
+        }
+    }
+}
+
 impl Storable for Config {
     const BOUND: Bound = Bound::Unbounded;
 
@@ -92,7 +104,7 @@ impl ConfigKey {
     pub fn from_bot_cmd_scope(scope: BotCommandScope) -> Self {
         match scope {
             BotCommandScope::Chat(BotActionChatDetails { chat, .. }) => match chat {
-                Chat::Channel(canister_id, channel_id) => Self::Community(canister_id),
+                Chat::Channel(canister_id, _channel_id) => Self::Community(canister_id),
                 Chat::Group(canister_id) => Self::Group(canister_id),
                 Chat::Direct(canister_id) => Self::Direct(canister_id),
             },

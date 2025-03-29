@@ -151,7 +151,7 @@ pub async fn get_latest_price(base_asset: Asset, quote_asset: Asset) -> Result<(
         timestamp: None,
     };
 
-    let (call_result, cycles_refunded) = get_exchange_rate(xrc_arg).await;
+    let (call_result, _cycles_refunded) = get_exchange_rate(xrc_arg).await;
     let (get_xrate_result,) =
         call_result.map_err(|e| format!("Failed to get Price. XRC call failed: {:?}", e))?;
 
@@ -193,4 +193,3 @@ fn get_price_from_rate(xrate: ExchangeRate) -> f64 {
 
     that means next latest rate will be available at 1743157560 but will be cached at 1743157590.
 */
-// 1743158105

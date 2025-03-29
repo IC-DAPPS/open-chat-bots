@@ -1,5 +1,5 @@
+use crate::price_provider::format_float;
 use crate::price_provider::icpswap::{get_icrc_ledger_name, get_latest_price};
-use crate::price_provider::{format_float, get_expiration_time};
 use crate::stable::config_map::{self, Config, ConfigKey};
 use crate::stable::price_map::{self, PriceStore};
 use async_trait::async_trait;
@@ -39,10 +39,10 @@ impl CommandHandler<CanisterRuntime> for ConfigICPSwapProvider {
             .await
             .map_err(|e| format!("Failed to get ledger name: {:?}", e))?;
 
-        let price = get_latest_price(canister_id).await?;
+        let (price, expiration_time) = get_latest_price(canister_id).await?;
 
         let reply = format!(
-            "Configured ICPSwap as provider for {ledger_name} \nCurrent Price of {ledger_name} ${}",
+            "Configured ICPSwap as provider for {ledger_name} \nCurrent Price of {ledger_name} is ${}",
             format_float(price)
         );
 
@@ -55,7 +55,7 @@ impl CommandHandler<CanisterRuntime> for ConfigICPSwapProvider {
             canister_id.to_string(),
             PriceStore {
                 price,
-                expiration_time: get_expiration_time(),
+                expiration_time,
                 name: Some(ledger_name),
             },
         );

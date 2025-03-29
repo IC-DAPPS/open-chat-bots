@@ -1,6 +1,6 @@
 use crate::memory::{get_memory, Memory};
-// use candid::{self, CandidType, Decode, Deserialize, Encode, Principal};
-use candid::{CandidType, Decode, Encode, Principal};
+use crate::price_provider::xrc::Asset;
+use candid::{Decode, Encode, Principal};
 use ic_stable_structures::memory_manager::MemoryId;
 use ic_stable_structures::storable::{Bound, Storable};
 use ic_stable_structures::StableBTreeMap;
@@ -8,7 +8,6 @@ use oc_bots_sdk::types::{BotActionChatDetails, BotCommandScope, CanisterId, Chan
 use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 use std::cell::RefCell;
-use std::fmt::Display;
 
 const CONFIG_MAP_MEMORY_ID: MemoryId = MemoryId::new(1);
 
@@ -40,27 +39,6 @@ pub fn len() -> u64 {
     MAP.with(|p| p.borrow().len())
 }
 
-#[derive(CandidType, Serialize, Deserialize, Debug, Clone)]
-pub enum AssetClass {
-    Cryptocurrency,
-    FiatCurrency,
-}
-
-impl ToString for AssetClass {
-    fn to_string(&self) -> String {
-        match self {
-            Self::Cryptocurrency => "Cryptocurrency".to_string(),
-            Self::FiatCurrency => "FiatCurrency".to_string(),
-        }
-    }
-}
-
-#[derive(CandidType, Serialize, Deserialize, Debug, Clone)]
-pub struct Asset {
-    pub class: AssetClass,
-    pub symbol: String,
-}
-
 #[derive(candid::CandidType, Clone, Serialize, Debug, Deserialize)]
 pub enum Config {
     XRC {
@@ -69,7 +47,7 @@ pub enum Config {
     },
     ICPSwap {
         canister_id: Principal,
-        name: String,
+        // name: String,
     },
 }
 

@@ -7,6 +7,10 @@ use oc_bots_sdk::types::{BotCommandContext, ChatRole};
 use oc_bots_sdk_canister::CanisterRuntime;
 use std::sync::LazyLock;
 
+use crate::price_provider::xrc::{get_latest_price, Asset};
+use crate::stable::config_map::{self, Config, ConfigKey};
+use crate::stable::price_map::{self, price_key_from_base_quote_asset, PriceStore};
+
 static DEFINITION: LazyLock<BotCommandDefinition> = LazyLock::new(ConfigXRCProvider::definition);
 
 pub struct ConfigXRCProvider;
@@ -40,9 +44,38 @@ impl CommandHandler<CanisterRuntime> for ConfigXRCProvider {
             .arg::<String>("Quote_Asset_Class");
 
         let reply = format!(
-            "Configured for Price of {}/{}\n Base Class: {}\n Quote Class: {}",
+            "Configured Exchange Rate Canister as provider for Price of {}/{}\n Base Class: {}\n Quote Class: {}\nCurrent rate of {base_asset_symbol}/{quote_asset_symbol} is ",
             base_asset_symbol, quote_asset_symbol, base_asset_class, quote_asset_class
         );
+
+        let base_asset = Asset::new_from_strings(&base_asset_class, base_asset_symbol)?;
+        let quote_asset = Asset::new_from_strings(&quote_asset_class, quote_asset_symbol)?;
+
+        let (price, expiration_time) =
+            get_latest_price(base_asset.clone(), quote_asset.clone()).await?;
+
+        let price_key = price_key_from_base_quote_asset(&base_asset, &quote_asset);
+
+        let scope = oc_client.context().scope.to_owned();
+        let config_key = ConfigKey::from_bot_cmd_scope(scope);
+        config_map::insert(
+            config_key,
+            Config::XRC {
+                base_asset,
+                quote_asset,
+            },
+        );
+
+        price_map::insert(
+            price_key,
+            PriceStore {
+                price,
+                expiration_time,
+                name: None,
+            },
+        );
+
+        let reply = format!("{reply}{price}");
 
         // Send the message to OpenChat but don't wait for the response
         let message = oc_client

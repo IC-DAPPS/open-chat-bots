@@ -1,4 +1,5 @@
 use crate::memory::{get_memory, Memory};
+use crate::price_provider::xrc::Asset;
 use candid::{Decode, Encode, Principal};
 use ic_stable_structures::memory_manager::MemoryId;
 use ic_stable_structures::storable::{Bound, Storable};
@@ -7,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 use std::cell::RefCell;
 
-use super::config_map::{Asset, Config};
+use super::config_map::Config;
 
 const PRICE_MEMORY_ID: MemoryId = MemoryId::new(2);
 
@@ -62,7 +63,7 @@ pub fn price_key_from_ledgerid(canister_id: Principal) -> String {
     canister_id.to_string()
 }
 
-pub fn price_key_from_base_quote_asset(base: Asset, quote: Asset) -> String {
+pub fn price_key_from_base_quote_asset(base: &Asset, quote: &Asset) -> String {
     format!(
         "{}/{}[{}/{}]",
         base.symbol,
@@ -74,10 +75,12 @@ pub fn price_key_from_base_quote_asset(base: Asset, quote: Asset) -> String {
 
 pub fn price_key_from_config(config: Config) -> String {
     match config {
-        Config::ICPSwap { canister_id, name } => price_key_from_ledgerid(canister_id),
+        Config::ICPSwap {
+            canister_id, /* name */
+        } => price_key_from_ledgerid(canister_id),
         Config::XRC {
             base_asset,
             quote_asset,
-        } => price_key_from_base_quote_asset(base_asset, quote_asset),
+        } => price_key_from_base_quote_asset(&base_asset, &quote_asset),
     }
 }

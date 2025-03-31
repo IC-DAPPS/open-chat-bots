@@ -46,7 +46,7 @@ impl Price {
         BotCommandDefinition {
             name: "price".to_string(),
             description: Some(
-                "This will return price of configured Cryptocurrency or FiatCurrency".to_string(),
+                "This will return price of configured Cryptocurrency or FiatCurrency. It returns an Ephemeral message that will only be visible for the user that initiated interaction with a bot, and it will disappear upon UI refresh.".to_string(),
             ),
             placeholder: Some("Getting latest price ...".to_string()),
             params: vec![],

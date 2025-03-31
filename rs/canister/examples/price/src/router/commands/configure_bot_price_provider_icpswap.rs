@@ -73,7 +73,7 @@ impl ConfigICPSwapProvider {
     fn definition() -> BotCommandDefinition {
         BotCommandDefinition {
             name: "configure_bot_price_provider_icpswap".to_string(),
-            description: Some("Use this command to configure price bot using ICPSwap".to_string()),
+            description: Some("Use this command to configure price bot using ICPSwap.  It returns an Ephemeral message that will only be visible for the user that initiated interaction with a bot, and it will disappear upon UI refresh.".to_string()),
             placeholder: Some("Configuring ...".to_string()),
             params: vec![BotCommandParam {
                 name: "Ledger_CanisterId".to_string(),

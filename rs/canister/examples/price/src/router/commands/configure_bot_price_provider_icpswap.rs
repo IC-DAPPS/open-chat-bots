@@ -4,11 +4,10 @@ use crate::stable::config_map::{self, Config, ConfigKey};
 use crate::stable::price_map::{self, PriceStore};
 use async_trait::async_trait;
 use candid::Principal;
-use oc_bots_sdk::api::command::{CommandHandler, SuccessResult};
+use oc_bots_sdk::api::command::{CommandHandler, EphemeralMessageBuilder, SuccessResult};
 use oc_bots_sdk::api::definition::*;
-use oc_bots_sdk::oc_api::actions::send_message;
 use oc_bots_sdk::oc_api::client::Client;
-use oc_bots_sdk::types::{BotCommandContext, ChatRole};
+use oc_bots_sdk::types::{BotCommandContext, ChatRole, MessageContentInitial};
 use oc_bots_sdk_canister::CanisterRuntime;
 use std::sync::LazyLock;
 
@@ -60,18 +59,13 @@ impl CommandHandler<CanisterRuntime> for ConfigICPSwapProvider {
             },
         );
 
-        // Send the message to OpenChat but don't wait for the response
-        let message = oc_client
-            .send_text_message(reply)
-            .with_block_level_markdown(true)
-            .execute_then_return_message(|args, response| match response {
-                Ok(send_message::Response::Success(_)) => {}
-                error => {
-                    ic_cdk::println!("send_text_message: {args:?}, {error:?}");
-                }
-            });
-
-        Ok(SuccessResult { message })
+        // Reply to the initiator with an ephemeral message
+        Ok(EphemeralMessageBuilder::new(
+            MessageContentInitial::from_text(reply),
+            oc_client.context().scope.message_id().unwrap(),
+        )
+        .build()
+        .into())
     }
 }
 

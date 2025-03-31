@@ -1,10 +1,9 @@
 use async_trait::async_trait;
 use ic_cdk::api::time;
-use oc_bots_sdk::api::command::{CommandHandler, SuccessResult};
+use oc_bots_sdk::api::command::{CommandHandler, EphemeralMessageBuilder, SuccessResult};
 use oc_bots_sdk::api::definition::*;
-use oc_bots_sdk::oc_api::actions::send_message;
 use oc_bots_sdk::oc_api::client::Client;
-use oc_bots_sdk::types::{BotCommandContext, BotCommandScope};
+use oc_bots_sdk::types::{BotCommandContext, BotCommandScope, MessageContentInitial};
 use oc_bots_sdk_canister::CanisterRuntime;
 use std::sync::LazyLock;
 
@@ -32,18 +31,13 @@ impl CommandHandler<CanisterRuntime> for Price {
         // let text = format!("user_id: {}\n\nscope: {:?}", user_id, scope);
 
         let reply = get_price_message(scope).await?;
-        // Send the message to OpenChat but don't wait for the response
-        let message = oc_client
-            .send_text_message(reply)
-            .with_block_level_markdown(true)
-            .execute_then_return_message(|args, response| match response {
-                Ok(send_message::Response::Success(_)) => {}
-                error => {
-                    ic_cdk::println!("send_text_message: {args:?}, {error:?}");
-                }
-            });
 
-        Ok(SuccessResult { message })
+        Ok(EphemeralMessageBuilder::new(
+            MessageContentInitial::from_text(reply),
+            oc_client.context().scope.message_id().unwrap(),
+        )
+        .build()
+        .into())
     }
 }
 

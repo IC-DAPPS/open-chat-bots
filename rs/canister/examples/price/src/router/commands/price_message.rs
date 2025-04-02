@@ -45,7 +45,7 @@ impl CommandHandler<CanisterRuntime> for PriceMessage {
 impl PriceMessage {
     fn definition() -> BotCommandDefinition {
         BotCommandDefinition {
-            name: "price".to_string(),
+            name: "price_message".to_string(),
             description: Some(
                 "This will return price of configured Cryptocurrency or FiatCurrency".to_string(),
             ),

@@ -7,7 +7,7 @@ use oc_bots_sdk::types::{BotCommandContext, BotCommandScope, MessageContentIniti
 use oc_bots_sdk_canister::CanisterRuntime;
 use std::sync::LazyLock;
 
-use crate::price_provider::{icpswap, xrc};
+use crate::price_provider::{format_float, icpswap, xrc};
 use crate::stable::config_map::{self, Config, ConfigKey};
 use crate::stable::price_map::{self, price_key_from_config, PriceStore};
 
@@ -67,13 +67,19 @@ async fn get_price_message(scope: BotCommandScope) -> Result<String, String> {
 
     if time() < price_store.expiration_time {
         let message = match &price_store.name {
-            Some(name) => format!("Current Price of {name} is ${}", price_store.price), // Name is not none for ICPSwap
+            Some(name) => format!(
+                "Current Price of {name} is ${}",
+                format_float(price_store.price)
+            ), // Name is not none for ICPSwap
             None => {
                 let (base, quote) = config
                     .xrc_asset_symbols()
                     .ok_or("Failed to get base and quote symbols")?;
 
-                format!("Current Price of {base} is {} {quote}", price_store.price)
+                format!(
+                    "Current Price of {base} is {} {quote}",
+                    format_float(price_store.price)
+                )
             } // Name field none for XRC.
         };
 
@@ -88,13 +94,13 @@ async fn get_price_message(scope: BotCommandScope) -> Result<String, String> {
         };
 
         let message = match &price_store.name {
-            Some(name) => format!("Current Price of {name} is ${price}"), // Name is not none for ICPSwap
+            Some(name) => format!("Current Price of {name} is ${}", format_float(price)), // Name is not none for ICPSwap
             None => {
                 let (base, quote) = config
                     .xrc_asset_symbols()
                     .ok_or("Failed to get base and quote symbols")?;
 
-                format!("Current Price of {base} is {price} {quote}")
+                format!("Current Price of {base} is {} {quote}", format_float(price))
             } // Name field none for XRC.
         };
 

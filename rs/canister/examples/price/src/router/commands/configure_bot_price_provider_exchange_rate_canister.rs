@@ -6,6 +6,7 @@ use oc_bots_sdk::types::{BotCommandContext, BotCommandScope, ChatRole, MessageCo
 use oc_bots_sdk_canister::CanisterRuntime;
 use std::sync::LazyLock;
 
+use crate::price_provider::format_float;
 use crate::price_provider::xrc::{get_latest_price, Asset};
 use crate::stable::config_map::{self, Config, ConfigKey};
 use crate::stable::price_map::{self, price_key_from_base_quote_asset, PriceStore};
@@ -100,7 +101,7 @@ async fn helper_function(
         },
     );
 
-    let reply = format!("{reply}{price}");
+    let reply = format!("{reply}{}", format_float(price));
     Ok(reply)
 }
 

@@ -9,15 +9,18 @@ use oc_bots_sdk_canister::CanisterRuntime;
 use oc_bots_sdk_canister::OPENCHAT_CLIENT_FACTORY;
 use oc_bots_sdk_canister::{HttpRequest, HttpResponse};
 use price::Price;
+use price_message::PriceMessage;
 use std::sync::LazyLock;
 
 mod configure_bot_price_provider_exchange_rate_canister;
 mod configure_bot_price_provider_icpswap;
 mod price;
+mod price_message;
 
 static COMMANDS: LazyLock<CommandHandlerRegistry<CanisterRuntime>> = LazyLock::new(|| {
     CommandHandlerRegistry::new(OPENCHAT_CLIENT_FACTORY.clone())
         .register(Price)
+        .register(PriceMessage)
         .register(ConfigXRCProvider)
         .register(ConfigICPSwapProvider)
 });

@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use oc_bots_sdk::api::command::{CommandHandler, EphemeralMessageBuilder, SuccessResult};
 use oc_bots_sdk::api::definition::*;
 use oc_bots_sdk::oc_api::client::Client;
-use oc_bots_sdk::types::{BotCommandContext, ChatRole, MessageContentInitial};
+use oc_bots_sdk::types::{BotCommandContext, BotCommandScope, ChatRole, MessageContentInitial};
 use oc_bots_sdk_canister::CanisterRuntime;
 use std::sync::LazyLock;
 
@@ -42,48 +42,66 @@ impl CommandHandler<CanisterRuntime> for ConfigXRCProvider {
             .command
             .arg::<String>("Quote_Asset_Class");
 
-        let reply = format!(
-            "Configured Exchange Rate Canister as provider for Price of {}/{}\n Base Class: {}\n Quote Class: {}\nCurrent rate of {base_asset_symbol}/{quote_asset_symbol} is ",
-            base_asset_symbol, quote_asset_symbol, base_asset_class, quote_asset_class
-        );
-
-        let base_asset = Asset::new_from_strings(&base_asset_class, base_asset_symbol)?;
-        let quote_asset = Asset::new_from_strings(&quote_asset_class, quote_asset_symbol)?;
-
-        let (price, expiration_time) =
-            get_latest_price(base_asset.clone(), quote_asset.clone()).await?;
-
-        let price_key = price_key_from_base_quote_asset(&base_asset, &quote_asset);
-
         let scope = oc_client.context().scope.to_owned();
-        let config_key = ConfigKey::from_bot_cmd_scope(scope);
-        config_map::insert(
-            config_key,
-            Config::XRC {
-                base_asset,
-                quote_asset,
-            },
-        );
 
-        price_map::insert(
-            price_key,
-            PriceStore {
-                price,
-                expiration_time,
-                name: None,
-            },
-        );
-
-        let reply = format!("{reply}{price}");
-
-        // Reply to the initiator with an ephemeral message
-        Ok(EphemeralMessageBuilder::new(
-            MessageContentInitial::from_text(reply),
-            oc_client.context().scope.message_id().unwrap(),
+        match helper_function(
+            scope,
+            base_asset_symbol,
+            quote_asset_symbol,
+            base_asset_class,
+            quote_asset_class,
         )
-        .build()
-        .into())
+        .await
+        {
+            Ok(reply) => Ok(send_ephemeral_message(reply, &oc_client.context().scope)),
+            Err(err_message) => Ok(send_ephemeral_message(
+                err_message,
+                &oc_client.context().scope,
+            )),
+        }
     }
+}
+
+async fn helper_function(
+    scope: BotCommandScope,
+    base_asset_symbol: String,
+    quote_asset_symbol: String,
+    base_asset_class: String,
+    quote_asset_class: String,
+) -> Result<String, String> {
+    let reply = format!(
+        "Configured Exchange Rate Canister as provider for Price of {}/{}\n Base Class: {}\n Quote Class: {}\nCurrent rate of {base_asset_symbol}/{quote_asset_symbol} is ",
+        base_asset_symbol, quote_asset_symbol, base_asset_class, quote_asset_class
+    );
+
+    let base_asset = Asset::new_from_strings(&base_asset_class, base_asset_symbol)?;
+    let quote_asset = Asset::new_from_strings(&quote_asset_class, quote_asset_symbol)?;
+
+    let (price, expiration_time) =
+        get_latest_price(base_asset.clone(), quote_asset.clone()).await?;
+
+    let price_key = price_key_from_base_quote_asset(&base_asset, &quote_asset);
+
+    let config_key = ConfigKey::from_bot_cmd_scope(scope);
+    config_map::insert(
+        config_key,
+        Config::XRC {
+            base_asset,
+            quote_asset,
+        },
+    );
+
+    price_map::insert(
+        price_key,
+        PriceStore {
+            price,
+            expiration_time,
+            name: None,
+        },
+    );
+
+    let reply = format!("{reply}{price}");
+    Ok(reply)
 }
 
 impl ConfigXRCProvider {
@@ -185,4 +203,14 @@ impl ConfigXRCProvider {
             direct_messages: false,
         }
     }
+}
+
+fn send_ephemeral_message(reply: String, scope: &BotCommandScope) -> SuccessResult {
+    // Reply to the initiator with an ephemeral message
+    EphemeralMessageBuilder::new(
+        MessageContentInitial::from_text(reply),
+        scope.message_id().unwrap(),
+    )
+    .build()
+    .into()
 }

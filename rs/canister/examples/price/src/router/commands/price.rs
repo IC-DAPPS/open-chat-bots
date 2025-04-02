@@ -30,14 +30,13 @@ impl CommandHandler<CanisterRuntime> for Price {
 
         // let text = format!("user_id: {}\n\nscope: {:?}", user_id, scope);
 
-        let reply = get_price_message(scope).await?;
-
-        Ok(EphemeralMessageBuilder::new(
-            MessageContentInitial::from_text(reply),
-            oc_client.context().scope.message_id().unwrap(),
-        )
-        .build()
-        .into())
+        match get_price_message(scope).await {
+            Ok(reply) => Ok(send_ephemeral_message(reply, &oc_client.context().scope)),
+            Err(err_message) => Ok(send_ephemeral_message(
+                err_message,
+                &oc_client.context().scope,
+            )),
+        }
     }
 }
 
@@ -110,6 +109,16 @@ async fn get_price_message(scope: BotCommandScope) -> Result<String, String> {
 
         Ok(message)
     }
+}
+
+fn send_ephemeral_message(reply: String, scope: &BotCommandScope) -> SuccessResult {
+    // Reply to the initiator with an ephemeral message
+    EphemeralMessageBuilder::new(
+        MessageContentInitial::from_text(reply),
+        scope.message_id().unwrap(),
+    )
+    .build()
+    .into()
 }
 
 /*

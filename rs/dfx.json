@@ -1,33 +1,39 @@
 {
-  "dfx": "0.26.0",
-  "canisters": {
-    "echo_bot": {
-      "type": "rust",
-      "package": "echo_bot",
-      "candid": "canister/examples/echo/can.did",
-      "gzip": true
+    "dfx": "0.26.0",
+    "canisters": {
+        "echo_bot": {
+            "type": "rust",
+            "package": "echo_bot",
+            "candid": "canister/examples/echo/can.did",
+            "gzip": true
+        },
+        "faq_bot": {
+            "type": "rust",
+            "package": "faq_bot",
+            "candid": "canister/examples/faq/can.did",
+            "gzip": true
+        },
+        "greet_bot": {
+            "type": "rust",
+            "package": "greet_bot",
+            "candid": "canister/examples/greet/canister/can.did",
+            "gzip": true
+        },
+        "reminder_bot": {
+            "type": "rust",
+            "package": "reminder_bot",
+            "candid": "canister/examples/reminder/can.did",
+            "gzip": true
+        }
     },
-    "greet_bot": {
-      "type": "rust",
-      "package": "greet_bot",
-      "candid": "canister/examples/greet/canister/can.did",
-      "gzip": true
+    "networks": {
+        "local": {
+            "bind": "127.0.0.1:8080",
+            "type": "ephemeral",
+            "replica": {
+                "subnet_type": "system"
+            }
+        }
     },
-    "reminder_bot": {
-      "type": "rust",
-      "package": "reminder_bot",
-      "candid": "canister/examples/reminder/can.did",
-      "gzip": true
-    }
-  },
-  "networks": {
-    "local": {
-      "bind": "127.0.0.1:8080",
-      "type": "ephemeral",
-      "replica": {
-        "subnet_type": "system"
-      }
-    }
-  },
-  "version": 1
+    "version": 1
 }

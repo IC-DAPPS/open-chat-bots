@@ -102,10 +102,7 @@ async fn get_price_message(scope: BotCommandScope) -> Result<String, String> {
                     .xrc_asset_symbols()
                     .ok_or("Failed to get base and quote symbols")?;
 
-                format!(
-                    "Current PriceMessage of {base} is {} {quote}",
-                    format_float(price)
-                )
+                format!("Current Price of {base} is {} {quote}", format_float(price))
             } // Name field none for XRC.
         };
 

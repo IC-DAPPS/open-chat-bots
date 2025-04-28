@@ -49,8 +49,8 @@ async fn helper_function(
     to: String,
     amount: f64,
 ) -> Result<String, String> {
-    let base_asset = Asset::new_from_strings(&from, "Fiat Currency".to_string())?;
-    let quote_asset = Asset::new_from_strings(&to, "Fiat Currency".to_string())?;
+    let base_asset = Asset::new_from_strings("FiatCurrency", from.clone())?;
+    let quote_asset = Asset::new_from_strings("FiatCurrency", to.clone())?;
 
     let price = get_latest_price(base_asset.clone(), quote_asset.clone()).await?;
 

@@ -681,6 +681,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 
 [[package]]
+name = "country-emoji"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d93ed3c15fd433a3e8f7e52e70968113d4cd572d84a9454d1899f64c72872f02"
+dependencies = [
+ "lazy_static",
+ "regex",
+]
+
+[[package]]
 name = "cpufeatures"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -782,6 +792,28 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0369ee1ad671834580515889b80f2ea915f23b8be8d0daa4bbaf2ac5c7590835"
 dependencies = [
  "cipher",
+]
+
+[[package]]
+name = "currency_converter_bot"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "candid",
+ "country-emoji",
+ "getrandom 0.2.15",
+ "http 1.2.0",
+ "ic-cdk",
+ "ic-http-certification",
+ "ic-stable-structures",
+ "ic_principal",
+ "iso_currency",
+ "oc_bots_sdk",
+ "oc_bots_sdk_canister",
+ "rmp-serde",
+ "serde",
+ "serde_json",
+ "thousands",
 ]
 
 [[package]]
@@ -1888,8 +1920,8 @@ dependencies = [
  "serde",
  "serde_bytes",
  "sha2 0.10.8",
- "strum",
- "strum_macros",
+ "strum 0.26.3",
+ "strum_macros 0.26.4",
  "time",
 ]
 
@@ -2090,6 +2122,27 @@ name = "is_terminal_polyfill"
 version = "1.70.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf"
+
+[[package]]
+name = "iso_country"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "20633e788d3948ea7336861fdb09ec247f5dae4267e8f0743fa97de26c28624d"
+dependencies = [
+ "lazy_static",
+]
+
+[[package]]
+name = "iso_currency"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fed4b3f0921193400b1df556228bfd917c57c7fa38bda904d552653c5c3b641b"
+dependencies = [
+ "iso_country",
+ "proc-macro2",
+ "quote",
+ "strum 0.27.1",
+]
 
 [[package]]
 name = "itertools"
@@ -2649,26 +2702,6 @@ dependencies = [
  "arrayvec 0.5.2",
  "typed-arena",
  "unicode-width",
-]
-
-[[package]]
-name = "price_bot"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "candid",
- "getrandom 0.2.15",
- "http 1.2.0",
- "ic-cdk",
- "ic-http-certification",
- "ic-stable-structures",
- "ic_principal",
- "oc_bots_sdk",
- "oc_bots_sdk_canister",
- "rmp-serde",
- "serde",
- "serde_json",
- "thousands",
 ]
 
 [[package]]
@@ -3607,7 +3640,16 @@ version = "0.26.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8fec0f0aef304996cf250b31b5a10dee7980c85da9d759361292b8bca5a18f06"
 dependencies = [
- "strum_macros",
+ "strum_macros 0.26.4",
+]
+
+[[package]]
+name = "strum"
+version = "0.27.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f64def088c51c9510a8579e3c5d67c65349dcf755e5479ad3d010aa6454e2c32"
+dependencies = [
+ "strum_macros 0.27.1",
 ]
 
 [[package]]
@@ -3615,6 +3657,19 @@ name = "strum_macros"
 version = "0.26.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c6bee85a5a24955dc440386795aa378cd9cf82acd5f764469152d2270e581be"
+dependencies = [
+ "heck",
+ "proc-macro2",
+ "quote",
+ "rustversion",
+ "syn 2.0.96",
+]
+
+[[package]]
+name = "strum_macros"
+version = "0.27.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c77a8c5abcaf0f9ce05d62342b7d298c346515365c36b673df4ebe3ced01fde8"
 dependencies = [
  "heck",
  "proc-macro2",

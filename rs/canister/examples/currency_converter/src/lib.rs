@@ -9,10 +9,10 @@ use memory::get_upgrades_memory;
 use serde::{Deserialize, Serialize};
 use state::State;
 
+mod country;
 pub mod memory;
 mod price_provider;
 pub mod router;
-pub mod stable;
 pub mod state;
 
 const READER_WRITER_BUFFER_SIZE: usize = 1024 * 1024; // 1MB

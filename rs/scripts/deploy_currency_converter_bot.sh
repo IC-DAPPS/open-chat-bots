@@ -21,4 +21,4 @@ OC_PUBLIC_KEY=$(curl -s http://localhost:5001/public-key) || exit 1
 ARGS="(record { oc_public_key = \"$OC_PUBLIC_KEY\" } )"
 
 # Deploy the echo_bot with the given MODE and ARGS
-./utils/deploy_bot.sh price_bot EchoBot $MODE "$ARGS"
+./utils/deploy_bot.sh currency_converter_bot CurrencyConverterBot $MODE "$ARGS"

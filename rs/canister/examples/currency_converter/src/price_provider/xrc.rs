@@ -144,7 +144,7 @@ pub async fn get_exchange_rate(
     (result, msg_cycles_refunded())
 }
 
-pub async fn get_latest_price(base_asset: Asset, quote_asset: Asset) -> Result<(f64, u64), String> {
+pub async fn get_latest_price(base_asset: Asset, quote_asset: Asset) -> Result<f64, String> {
     let xrc_arg = GetExchangeRateRequest {
         base_asset,
         quote_asset,
@@ -164,17 +164,7 @@ pub async fn get_latest_price(base_asset: Asset, quote_asset: Asset) -> Result<(
 
     let timestamp = xrate.timestamp;
 
-    Ok((
-        get_price_from_rate(xrate),
-        get_expiration_time_xrc(timestamp),
-    ))
-}
-
-fn get_expiration_time_xrc(timestamp_in_sec: u64) -> u64 {
-    let a_minute_and_half = 90;
-    let nanosec = 1_000_000_000;
-
-    (timestamp_in_sec + a_minute_and_half) * nanosec
+    Ok(get_price_from_rate(xrate))
 }
 
 fn get_price_from_rate(xrate: ExchangeRate) -> f64 {

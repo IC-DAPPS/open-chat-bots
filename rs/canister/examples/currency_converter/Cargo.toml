@@ -1,5 +1,5 @@
 [package]
-name = "price_bot"
+name = "currency_converter_bot"
 version = "0.1.0"
 edition = "2021"
 
@@ -24,3 +24,5 @@ rmp-serde = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 thousands = "0.2"
+iso_currency = { version = "0.5", features = ["iterator"] }
+country-emoji = "0.2"

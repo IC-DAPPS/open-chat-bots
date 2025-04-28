@@ -7,10 +7,10 @@
       "candid": "canister/examples/echo/can.did",
       "gzip": true
     },
-    "price_bot": {
+    "currency_converter_bot": {
       "type": "rust",
-      "package": "price_bot",
-      "candid": "canister/examples/price/can.did",
+      "package": "currency_converter_bot",
+      "candid": "canister/examples/currency_converter/can.did",
       "gzip": true,
       "dependencies": ["exchange_rate_canister"]
     },

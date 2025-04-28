@@ -111,7 +111,7 @@ impl CurrencyConverter {
                 },
             ],
             permissions: BotPermissions::text_only(),
-            default_role: Some(ChatRole::Admin),
+            default_role: None,
             direct_messages: false,
         }
     }

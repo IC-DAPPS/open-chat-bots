@@ -1,6 +1,7 @@
 use crate::state;
 use configure_bot_price_provider_exchange_rate_canister::ConfigXRCProvider;
 use configure_bot_price_provider_icpswap::ConfigICPSwapProvider;
+use help::Help;
 use oc_bots_sdk::api::command::CommandHandlerRegistry;
 use oc_bots_sdk::api::definition::BotCommandDefinition;
 use oc_bots_sdk_canister::env::now;
@@ -14,6 +15,7 @@ use std::sync::LazyLock;
 
 mod configure_bot_price_provider_exchange_rate_canister;
 mod configure_bot_price_provider_icpswap;
+mod help;
 mod price;
 mod price_message;
 
@@ -23,6 +25,7 @@ static COMMANDS: LazyLock<CommandHandlerRegistry<CanisterRuntime>> = LazyLock::n
         .register(PriceMessage)
         .register(ConfigXRCProvider)
         .register(ConfigICPSwapProvider)
+        .register(Help)
 });
 
 pub fn definitions() -> Vec<BotCommandDefinition> {

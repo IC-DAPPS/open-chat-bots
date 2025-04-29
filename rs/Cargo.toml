@@ -3,6 +3,7 @@ members = [
     "canister/examples/echo",
     "canister/examples/greet/canister",
     "canister/examples/greet/loader",
+    "canister/examples/low_level",
     "canister/examples/reminder",
     "canister/sdk",
     "offchain/examples/dice",
@@ -25,7 +26,7 @@ cron = { version = "0.15.0", features = ["serde"] }
 ct-codecs = "1.1.1"
 dataurl = "0.1.2"
 dotenv = "0.15.0"
-english-to-cron = "0.1.2" 
+english-to-cron = "0.1.2"
 getrandom = { version = "0.2.15", features = ["custom"] }
 http = "1.1.0"
 ic-agent = "0.39.3"

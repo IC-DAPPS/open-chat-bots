@@ -41,7 +41,7 @@ fn get_faq(scope: BotCommandScope) -> Result<String, String> {
 
     // Try to get FAQs for this chat/channel. If none exist, return a helpful message
     let faq = faq_map::get(&key).ok_or(
-        "No FAQs have been set up yet. Please ask a Moderator to add some FAQs for this chat.",
+        "No FAQs have been set up yet. Please ask a Moderator to add some FAQs for this community or group.",
     )?;
 
     Ok(faq)

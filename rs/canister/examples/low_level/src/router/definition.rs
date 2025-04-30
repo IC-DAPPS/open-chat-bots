@@ -7,7 +7,7 @@ pub async fn get(_request: HttpRequest) -> HttpResponse {
         200,
         &BotDefinition {
             description:
-                "This is a minimal canister bot for testing purposes with a single 'echo' command."
+                "A utility bot providing low-level Internet Computer functionality including canister management, account/principal validation, subnet lookup, and cycle balance checks"
                     .to_string(),
             commands: commands::definitions(),
             autonomous_config: None,

@@ -49,7 +49,12 @@ impl CheckPrincipal {
                 BotCommandParam {
                     name: "Principal".to_string(),
                     description: Some("The principal ID to check".to_string()),
-                    param_type: BotCommandParamType::UserParam,
+                    param_type: BotCommandParamType::StringParam(StringParam {
+                        min_length: 0,
+                        max_length: 100,
+                        choices: vec![],
+                        multi_line: false,
+                    }),
                     required: true,
                     placeholder: Some("Enter a Principal ID".to_string()),
                 },

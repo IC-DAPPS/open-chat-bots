@@ -47,7 +47,12 @@ impl CheckAccountId {
                 BotCommandParam {
                     name: "AccountID".to_string(),
                     description: Some("The Account ID to check".to_string()),
-                    param_type: BotCommandParamType::UserParam,
+                    param_type: BotCommandParamType::StringParam(StringParam {
+                        min_length: 1,
+                        max_length: 100,
+                        choices: vec![],
+                        multi_line: false,
+                    }),
                     required: true,
                     placeholder: Some("Enter a Account ID".to_string()),
                 },

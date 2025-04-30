@@ -39,7 +39,10 @@ impl CommandHandler<CanisterRuntime> for FAQ {
 fn get_faq(scope: BotCommandScope) -> Result<String, String> {
     let key: Key = Key::from_bot_cmd_scope(scope)?;
 
-    let faq = faq_map::get(&key).ok_or("No FAQs yet. Ask a Moderator to set them up.")?;
+    // Try to get FAQs for this chat/channel. If none exist, return a helpful message
+    let faq = faq_map::get(&key).ok_or(
+        "No FAQs have been set up yet. Please ask a Moderator to add some FAQs for this chat.",
+    )?;
 
     Ok(faq)
 }

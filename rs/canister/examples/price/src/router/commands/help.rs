@@ -25,31 +25,32 @@ impl CommandHandler<CanisterRuntime> for Help {
 
         // let text = `format!("user_id: {}\n\nscope: {:?}", user_id, scope);
 
-        let reply = "What is Price Bot?
+        let reply = "**What is Price Bot?**
         Price Bot is a bot that shows the price of a crypto/fiat currency. Each community or group can configure the bot to get the price of any crypto/fiat currency according to their needs.
+        
         ---
-        How to use the bot?
+        **How to use the bot?**
 
-        - `/price` : Get the price of a crypto/fiat currency configured by the community as message only visible to you.
-        - `/price_message` : Get the price of a crypto/fiat currency configured by the community as message visible to everyone in the group or community.
-        - `/configure_bot_price_provider_exchange_rate_canister` : Configure the bot to get the price of a crypto/fiat currency from the Exchange Rate Canister. *Only community or group administrators can use this command*.
-        - `/configure_bot_price_provider_icpswap` : Configure the bot to fetch prices for ICRC tokens in the ICP ecosystem that are listed on ICPSwap. *Only community or group administrators can use this command*.
+         - `/price` : Get the price of a crypto/fiat currency configured by the community as message only visible to you.
+         - `/price_message` : Get the price of a crypto/fiat currency configured by the community as message visible to everyone in the group or community.
+         - `/configure_bot_price_provider_exchange_rate_canister` : Configure the bot to get the price of a crypto/fiat currency from the Exchange Rate Canister. *Only community or group administrators can use this command*.
+         - `/configure_bot_price_provider_icpswap` : Configure the bot to fetch prices for ICRC tokens in the ICP ecosystem that are listed on ICPSwap. *Only community or group administrators can use this command*.
         ---
-        How to use the configure_bot_price_provider_exchange_rate_canister command?
+        **How to use the configure_bot_price_provider_exchange_rate_canister command?**
 
-        - You have to be an administrator of the community or group to use this command.
-        - Type the command `/configure_bot_price_provider_exchange_rate_canister` in the group or community.
-        - Popup will appear asking for the `Base_Asset_Symbol`,`Base_Asset_Class`, `Quote_Asset_Symbol` and `Quote_Asset_Class`.
-        - For example if you are configureing for Bitcoin price fill input as `BTC` for `Base_Asset_Symbol`, select `Cryptocurrency` for `Base_Asset_Class`, `USD` for `Quote_Asset_Symbol` and `Fiat Currency` for `Quote_Asset_Class`.
-        - If configured successfully, price bot will show the price of Bitcoin in USD in response message.
+         - You have to be an administrator of the community or group to use this command.
+         - Type the command `/configure_bot_price_provider_exchange_rate_canister` in the group or community.
+         - Popup will appear asking for the `Base_Asset_Symbol`,`Base_Asset_Class`, `Quote_Asset_Symbol` and `Quote_Asset_Class`.
+         - For example if you are configureing for Bitcoin price fill input as `BTC` for `Base_Asset_Symbol`, select `Cryptocurrency` for `Base_Asset_Class`, `USD` for `Quote_Asset_Symbol` and `Fiat Currency` for `Quote_Asset_Class`.
+         - If configured successfully, price bot will show the price of Bitcoin in USD in response message.
         ---
-        How to use the configure_bot_price_provider_icpswap command ?
+        **How to use the configure_bot_price_provider_icpswap command?**
 
-        - You have to be an administrator of the community or group to use this command.
-        - Type the command `/configure_bot_price_provider_icpswap` in the group or community.
-        - Popup will appear asking for the `Ledger_Canister_Id` Its the canister id of the ICRC Ledger.
-        - For example if you are configureing for CHAT token price fill input as `2ouva-viaaa-aaaaq-aaamq-cai` for `Ledger_Canister_Id`.
-        - If configured successfully, price bot will show the price of CHAT token in USD in response message.
+         - You have to be an administrator of the community or group to use this command.
+         - Type the command `/configure_bot_price_provider_icpswap` in the group or community.
+         - Popup will appear asking for the `Ledger_Canister_Id` Its the canister id of the ICRC Ledger.
+         - For example if you are configureing for CHAT token price fill input as `2ouva-viaaa-aaaaq-aaamq-cai` for `Ledger_Canister_Id`.
+         - If configured successfully, price bot will show the price of CHAT token in USD in response message.
         ".to_string();
 
         Ok(send_ephemeral_message(reply, &oc_client.context().scope))
@@ -59,7 +60,7 @@ impl CommandHandler<CanisterRuntime> for Help {
 impl Help {
     fn definition() -> BotCommandDefinition {
         BotCommandDefinition {
-            name: "/help".to_string(),
+            name: "help".to_string(),
             description: Some("How to use the bot".to_string()),
             placeholder: None,
             params: vec![],

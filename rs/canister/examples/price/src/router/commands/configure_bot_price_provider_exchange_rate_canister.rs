@@ -110,7 +110,7 @@ impl ConfigXRCProvider {
         BotCommandDefinition {
             name: "configure_bot_price_provider_exchange_rate_canister".to_string(),
             description: Some(
-                "Use this command to configure price bot using Exchange Rate Canister.  It returns an Ephemeral message that will only be visible for the user that initiated interaction with a bot, and it will disappear upon UI refresh.".to_string(),
+                "Configure price bot to use Exchange Rate Canister as price source".to_string(),
             ),
             placeholder: Some("Configuring ...".to_string()),
             params: vec![BotCommandParam {

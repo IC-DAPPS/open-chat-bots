@@ -7,10 +7,7 @@ pub async fn get(_request: HttpRequest) -> HttpResponse {
         200,
         &BotDefinition {
             description:
-            "PriceBot provides real-time cryptocurrency and fiat currency exchange rates from multiple sources.
-            Get up-to-date price information for cryptocurrencies via ICPSwap or exchange rates between any currency
-            pairs (crypto or fiat) using the Exchange Rate Canister. Administrators can configure the bot to track
-            specific assets for their community.".to_string(),
+            "Price Bot is a bot that shows the price of a crypto/fiat currency. Each community or group can configure the bot to get the price of any crypto/fiat currency according to their needs.".to_string(),
             commands: commands::definitions(),
             autonomous_config: None,
         },

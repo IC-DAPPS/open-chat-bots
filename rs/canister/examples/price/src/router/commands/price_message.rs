@@ -47,7 +47,7 @@ impl PriceMessage {
         BotCommandDefinition {
             name: "price_message".to_string(),
             description: Some(
-                "This will return price of configured Cryptocurrency or FiatCurrency".to_string(),
+                "Shows crypto/fiat price in a message visible to everyone in the group or community.".to_string(),
             ),
             placeholder: Some("Getting latest price ...".to_string()),
             params: vec![],
@@ -61,11 +61,11 @@ impl PriceMessage {
 async fn get_price_message(scope: BotCommandScope) -> Result<String, String> {
     let config_key = ConfigKey::from_bot_cmd_scope(scope);
     let config = config_map::get(config_key)
-        .ok_or("Price config not found. Admin or Owner can set new price config.")?;
+        .ok_or("This community hasn't set up which price to track yet. Please ask a community admin or owner to set up the price configuration.")?;
 
     let price_key = price_key_from_config(&config);
 
-    let price_store = price_map::get(&price_key).ok_or("PriceMessage not exist in map")?;
+    let price_store = price_map::get(&price_key).ok_or("Price not exist in map")?;
 
     if time() < price_store.expiration_time {
         let message = match &price_store.name {

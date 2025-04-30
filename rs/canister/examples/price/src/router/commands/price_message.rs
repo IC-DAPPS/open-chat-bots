@@ -70,7 +70,7 @@ async fn get_price_message(scope: BotCommandScope) -> Result<String, String> {
     if time() < price_store.expiration_time {
         let message = match &price_store.name {
             Some(name) => format!(
-                "Current PriceMessage of {name} is ${}",
+                "Current Price of {name} is ${}",
                 format_float(price_store.price)
             ), // Name is not none for ICPSwap
             None => {
@@ -79,7 +79,7 @@ async fn get_price_message(scope: BotCommandScope) -> Result<String, String> {
                     .ok_or("Failed to get base and quote symbols")?;
 
                 format!(
-                    "Current PriceMessage of {base} is {} {quote}",
+                    "Current Price of {base} is {} {quote}",
                     format_float(price_store.price)
                 )
             } // Name field none for XRC.
@@ -96,7 +96,7 @@ async fn get_price_message(scope: BotCommandScope) -> Result<String, String> {
         };
 
         let message = match &price_store.name {
-            Some(name) => format!("Current PriceMessage of {name} is ${}", format_float(price)), // Name is not none for ICPSwap
+            Some(name) => format!("Current Price of {name} is ${}", format_float(price)), // Name is not none for ICPSwap
             None => {
                 let (base, quote) = config
                     .xrc_asset_symbols()

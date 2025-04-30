@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use oc_bots_sdk::api::command::{CommandHandler, SuccessResult};
 use oc_bots_sdk::api::definition::*;
 use oc_bots_sdk::oc_api::client::Client;
-use oc_bots_sdk::types::{BotCommandContext, BotCommandScope};
+use oc_bots_sdk::types::{BotCommandContext, BotCommandScope, ChatRole};
 use oc_bots_sdk_canister::CanisterRuntime;
 use std::sync::LazyLock;
 
@@ -50,7 +50,7 @@ impl DeleteFAQ {
             placeholder: Some("Deleting FAQs...".to_string()),
             params: vec![],
             permissions: BotPermissions::text_only(),
-            default_role: None,
+            default_role: Some(ChatRole::Moderator),
             direct_messages: Some(true),
         }
     }

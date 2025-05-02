@@ -11,6 +11,7 @@ use oc_bots_sdk_canister::OPENCHAT_CLIENT_FACTORY;
 use oc_bots_sdk_canister::{HttpRequest, HttpResponse};
 use price::Price;
 use price_message::PriceMessage;
+use price_of::PriceOf;
 use std::sync::LazyLock;
 
 mod configure_bot_price_provider_exchange_rate_canister;
@@ -18,6 +19,7 @@ mod configure_bot_price_provider_icpswap;
 mod help;
 mod price;
 mod price_message;
+mod price_of;
 
 static COMMANDS: LazyLock<CommandHandlerRegistry<CanisterRuntime>> = LazyLock::new(|| {
     CommandHandlerRegistry::new(OPENCHAT_CLIENT_FACTORY.clone())
@@ -26,6 +28,7 @@ static COMMANDS: LazyLock<CommandHandlerRegistry<CanisterRuntime>> = LazyLock::n
         .register(ConfigXRCProvider)
         .register(ConfigICPSwapProvider)
         .register(Help)
+        .register(PriceOf)
 });
 
 pub fn definitions() -> Vec<BotCommandDefinition> {

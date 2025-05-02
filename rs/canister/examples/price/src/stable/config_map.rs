@@ -1,5 +1,6 @@
 use crate::memory::{get_memory, Memory};
 use crate::price_provider::xrc::Asset;
+use candid::types::principal;
 use candid::{Decode, Encode, Principal};
 use ic_stable_structures::memory_manager::MemoryId;
 use ic_stable_structures::storable::{Bound, Storable};
@@ -59,6 +60,20 @@ impl Config {
                 quote_asset,
             } => Some((&base_asset.symbol, &quote_asset.symbol)),
             _ => None,
+        }
+    }
+
+    pub fn from_canister_id(principal: Principal) -> Self {
+        Self::ICPSwap {
+            canister_id: principal,
+            // name: String,
+        }
+    }
+
+    pub fn from_canister_id_str(principal: &str) -> Self {
+        Self::ICPSwap {
+            canister_id: Principal::from_text(principal).expect("Principal ID is invalid"),
+            // name: String,
         }
     }
 }

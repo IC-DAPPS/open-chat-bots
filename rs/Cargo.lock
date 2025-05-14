@@ -808,6 +808,7 @@ dependencies = [
  "ic-stable-structures",
  "ic_principal",
  "iso_currency",
+ "lazy_static",
  "oc_bots_sdk",
  "oc_bots_sdk_canister",
  "rmp-serde",

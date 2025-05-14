@@ -26,3 +26,8 @@ serde_json = { workspace = true }
 thousands = "0.2"
 iso_currency = { version = "0.5", features = ["iterator"] }
 country-emoji = "0.2"
+lazy_static = "1.4.0"
+
+[build-dependencies]
+candid = { workspace = true }
+serde_json = { workspace = true }
